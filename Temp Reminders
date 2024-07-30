@@ -1,0 +1,5 @@
+print(response.json())
+#for i in response.json()["data"]["values"].items():
+ # print(i)
+
+print("Current temperature: " + str(response.json()["data"]["values"]["temperature"]))
