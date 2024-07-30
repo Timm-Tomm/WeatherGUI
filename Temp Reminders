@@ -3,3 +3,20 @@ print(response.json())
  # print(i)
 
 print("Current temperature: " + str(response.json()["data"]["values"]["temperature"]))
+
+
+location = 64015
+url = "https://api.tomorrow.io/v4/weather/realtime?location={}%20US&units=imperial&apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm".format(location)
+headers = {"accept": "application/json"}
+response = requests.get(url, headers=headers)
+weather = print(response.json()["data"]["values"])
+DIRECTIONS = [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N' ]
+direction = round(response.json()["data"]["values"]["windDirection"]/22.5)
+
+print("Current temperature: " + str(response.json()["data"]["values"]["temperature"]) + "°F")
+print("Real feel: " + str(response.json()["data"]["values"]["temperatureApparent"]) + "°F")
+print("Humidity: " + str(response.json()["data"]["values"]["humidity"]) + "%")
+print("Wind speed: " + str(response.json()["data"]["values"]["windSpeed"]) + "MPH " + str(DIRECTIONS[direction]))
+Rain = print("Rain intensity: " + str(response.json()["data"]["values"]["rainIntensity"])) if response.json()["data"]["values"]["rainIntensity"] != 0 else "rainfail"
+Rain = print("Sleet intensity: " + str(response.json()["data"]["values"]["sleetIntensity"])) if response.json()["data"]["values"]["sleetIntensity"] != 0 else "sleetfail"
+Rain = print("Snow intensity: " + str(response.json()["data"]["values"]["snowIntensity"])) if response.json()["data"]["values"]["snowIntensity"] != 0 else "snowfail"
