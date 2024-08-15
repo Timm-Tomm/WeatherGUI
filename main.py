@@ -4,19 +4,31 @@ from pathlib import Path
 
 import WeatherFuncs
 import gui
+from datetime import datetime
+import tksvg
 
 #List of weather codes supplied by tomorrow.io
 codes =  {
-      "0": ("Unknown", ""), "1000": "Clear, Sunny", "1100": "Mostly Clear", "1101": "Partly Cloudy", "1102": "Mostly Cloudy", "1001": "Cloudy",
+      "0": "Unknown", "1000": "Clear, Sunny", "1100": "Mostly Clear", "1101": "Partly Cloudy", "1102": "Mostly Cloudy", "1001": "Cloudy",
       "2000": "Fog", "2100": "Light Fog", "4000": "Drizzle", "4001": "Rain", "4200": "Light Rain", "4201": "Heavy Rain",
       "5000": "Snow", "5001": "Flurries", "5100": "Light Snow", "5101": "Heavy Snow",
       "6000": "Freezing Drizzle", "6001": "Freezing Rain", "6200": "Light Freezing Rain", "6201": "Heavy Freezing Rain",
       "7000": "Ice Pellets", "7101": "Heavy Ice Pellets", "7102": "Light Ice Pellets",
       "8000": "Thunderstorm"
     }
+images = {
+      "0": "clear_day.svg", "1000": "clear_day.svg", "1100": "mostly_cloudy.svg", "1101": "partly_cloudy_day.svg", "1102": "mostly_cloudy.svg", "1001": "cloudy.svg",
+      "2000": "fog.svg", "2100": "fog_light.svg", "4000": "drizzle.svg", "4001": "rain.svg", "4200": "rain_light.svg", "4201": "rain_heavy.svg",
+      "5000": "snow.svg", "5001": "flurries.svg", "5100": "snow_light.svg", "5101": "snow_heavy.svg",
+      "6000": "freezing_drizzle.svg", "6001": "freezing_rain.svg", "6200": "freezing_rain_light.svg", "6201": "freezing_rain_heavy.svg",
+      "7000": "ice_pellets.svg", "7101": "ice_pellets_heavy.svg", "7102": "ice_pellets_light.svg",
+      "8000": "tstorm.svg"
+}
+
+
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI\WeatherGUI\build\assets\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\V1_icons\color")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -30,7 +42,7 @@ def main():
 
     canvas = Canvas(
     window,
-    bg = "#DDDDDD",
+    bg = "#87CEEB",
     height = 1080,
     width = 1440,
     bd = 0,
@@ -59,7 +71,6 @@ def main():
 
     #Build out the hourly forecast
     days = WeatherFuncs.get_daily_forecast(64015)
-    print(days)
     day1Temp = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperature"])
     day1RF = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperatureApparent"])
     day1Humid = str(days["data"]["timelines"][0]["intervals"][0]["values"]["humidity"])
@@ -86,8 +97,9 @@ def main():
     #hist = WeatherFuncs.get_History()
 
     #Current picture
-    image_image_4 = PhotoImage(
-        file=relative_to_assets("image_4.png"))
+    image_image_4 = tksvg.SvgImage(
+        file=relative_to_assets(images[weatherCode]))
+    image_image_4 = image_image_4.zoom(6, 6)
     CurrentCon = canvas.create_image(
         125,
         125,
@@ -95,8 +107,9 @@ def main():
     )
 
     #Fourth Day Picture
-    image_image_1 = PhotoImage(
-        file=relative_to_assets("image_1.png"))
+    image_image_1 = tksvg.SvgImage(
+        file=relative_to_assets(images[day4Code]))
+    image_image_1 = image_image_1.zoom(3, 3)
     Day4Pic = canvas.create_image(
         1147.0,
         787.0,
@@ -104,8 +117,9 @@ def main():
     )
 
     #Third Day Picture
-    image_image_2 = PhotoImage(
-        file=relative_to_assets("image_2.png"))
+    image_image_2 = tksvg.SvgImage(
+        file=relative_to_assets(images[day3Code]))
+    image_image_2 = image_image_2.zoom(3, 3)
     Day3Pic = canvas.create_image(
         787,
         787.0,
@@ -113,8 +127,9 @@ def main():
     )
 
     #Second Day Picture
-    image_image_3 = PhotoImage(
-        file=relative_to_assets("image_3.png"))
+    image_image_3 = tksvg.SvgImage(
+        file=relative_to_assets(images[day2Code]))
+    image_image_3 = image_image_3.zoom(3, 3)
     Day2Pic = canvas.create_image(
         427,
         787.0,
@@ -122,12 +137,22 @@ def main():
     )
 
     #First Day Picture
-    image_image_5 = PhotoImage(
-        file=relative_to_assets("image_5.png"))
+    image_image_5 = tksvg.SvgImage(
+        file=relative_to_assets(images[day1Code]))
+    image_image_5 = image_image_5.zoom(3, 3)
     Day1Pic = canvas.create_image(
         67,
         787.0,
         image=image_image_5
+    )
+
+
+    tomorrowPic = PhotoImage(
+        file=Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\powered-by-tomorrow\Powered_by_Tomorrow-Black.png"))
+    Pic = canvas.create_image(
+        1180,
+        40,
+        image = tomorrowPic,
     )
 
     window.resizable(False, False)
