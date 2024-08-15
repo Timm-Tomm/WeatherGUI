@@ -12,19 +12,26 @@ def get_current_weather(location):
     data = requests.get(URL) 
     return data.json()
 
-""" def get_current_weather(location):
-    URL = Template("https://data.tomorrow.io/v4/weather/realtime?location=$loc%20US&units=imperial&apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm")
-    response = requests.get(url = URL.substitute(loc=location))
-    data = response.json()
-    return data['data']['timelines'][0]['intervals'][0]
- """
 #API call to tomorrow.io for forecast data
 #Requires the location as a parameter to search on
-def get_hourly_forecast(location):
-    url = "https://api.tomorrow.io/v4/weather/forecast?location={}%20US&timesteps=1h&units=imperial&apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm".format(location)
-    headers = {"accept": "application/json"}
-    response = requests.get(url, headers=headers)
-    return response.text
+def get_daily_forecast(location):
+    URL = "https://api.tomorrow.io/v4/timelines?apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm"
+    payload = {
+    "location": "39.029292, -94.274253",
+    "fields": ["temperature", "temperatureApparent", "humidity", "weatherCode"],
+    "units": "imperial",
+    "timesteps": ["1d"],
+    "startTime": "now",
+    "endTime": "nowPlus4d",
+    "timezone": "auto"
+    }
+    headers = {
+    "accept": "application/json",
+    "Accept-Encoding": "gzip",
+    "content-type": "application/json"
+    }
+    data = requests.post(URL, json=payload, headers=headers)
+    return data.json()
 
 #Get "This Day in Weather History" data from weather.gov
 def get_History():

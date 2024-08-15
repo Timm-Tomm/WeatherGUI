@@ -7,7 +7,8 @@ import main
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import *
+#from tkinter import WORD, Tk, Canvas, Entry, Text, Button, PhotoImage
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI\WeatherGUI\build\assets\frame0")
@@ -115,15 +116,19 @@ def base(canvas):
         outline="")
     return canvas
 
-def show_days(canvas):
+def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Humid2, Humid3, Humid4, Code1, Code2, Code3, Code4):
     #Day 1
     canvas.create_text(
         125,
         737.0,
         anchor="nw",
-        text="Temp:\nRealFeel:\nHumid:\nRain %:\nSnow %:",
+        text="Temp: " + Temp1 + "°F"
+        "\nRealFeel: " + RF1 + "°F" +
+        "\nHumid: " + Humid1 + "%" +
+        "\nWeather Conditions: " + str(Code1),
         fill="#FFFFFF",
-        font=("Inter", 16 * -1)
+        font=("Inter", 16 * -1),
+        width=220
     )
 
     #Day 2
@@ -131,9 +136,13 @@ def show_days(canvas):
         490,
         734.0,
         anchor="nw",
-        text="Temp:\nRealFeel:\nHumid:\nRain %:\nSnow %:",
+        text="Temp: " + Temp2 + "°F" +
+        "\nRealFeel: " + RF2 + "°F" +
+        "\nHumid: " + Humid2 + "%" +
+        "\nWeather Conditions: " + str(Code2),
         fill="#FFFFFF",
-        font=("Inter", 16 * -1)
+        font=("Inter", 16 * -1),
+        width=220
     )
 
     #Day 3
@@ -141,9 +150,13 @@ def show_days(canvas):
         850,
         737.0,
         anchor="nw",
-        text="Temp:\nRealFeel:\nHumid:\nRain %:\nSnow %:",
+        text="Temp: " + Temp3 + "°F" +
+        "\nRealFeel: " + RF3 + "°F" +
+        "\nHumid: " + Humid3 + "%" +
+        "\nWeather Conditions: " + str(Code3),
         fill="#FFFFFF",
-        font=("Inter", 16 * -1)
+        font=("Inter", 16 * -1),
+        width=220
     )
 
     #Day 4
@@ -151,9 +164,13 @@ def show_days(canvas):
         1210.0,
         737.0,
         anchor="nw",
-        text="Temp:\nRealFeel:\nHumid:\nRain %:\nSnow %:",
+        text="Temp: " + Temp4 + "°F" +
+        "\nRealFeel: " + RF4 + "°F" +
+        "\nHumid: " + Humid4 + "%" +
+        "\nWeather Conditions: " + str(Code4),
         fill="#FFFFFF",
-        font=("Inter", 16 * -1)
+        font=("Inter", 16 * -1),
+        width=220
     )
     return canvas
 
@@ -200,7 +217,7 @@ def show_facts(canvas):
     15,
     anchor="sw",
     text="Powered by tomorrow.io",
-    fill="#AAAAAA",
+    fill="#999999",
     font=("Inter", 12 * -1)
     )
     return canvas
