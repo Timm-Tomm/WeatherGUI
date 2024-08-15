@@ -26,16 +26,15 @@ def base(canvas):
         0.0,
         1080.0,
         720.0,
-        fill="#87CEEB",
+        fill="#000030",
         outline="")
 
     canvas.create_rectangle(
         1080.0,
         80,
-        80,
         1440.0,
-        720.0,
-        fill="#BBBBBB",
+        715.0,
+        fill="#A2A2A2",
         outline="")
 
     canvas.create_rectangle(
@@ -115,16 +114,12 @@ def base(canvas):
         250,
         1075.0,
         715.0,
-        fill="#000030",
+        fill="#A2A2A2",
         outline="")
     return canvas
 
 def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Humid2, Humid3, Humid4, Code1, Code2, Code3, Code4):
     #Day 1
-    time = datetime.now().replace(minute=0, second=0)
-    time2 = datetime.now().replace(minute=0, second=0) + timedelta(days=1)
-    time3 = datetime.now().replace(minute=0, second=0) + timedelta(days=2)
-    time4 = datetime.now().replace(minute=0, second=0) + timedelta(days=3)
     time = datetime.now().replace(minute=0, second=0)
     time2 = datetime.now().replace(minute=0, second=0) + timedelta(days=1)
     time3 = datetime.now().replace(minute=0, second=0) + timedelta(days=2)
@@ -139,7 +134,6 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nWeather Conditions: " + str(Code1) + "\n" +
         time.strftime("%c"),
         fill="#FFFFFF",
-        font=("Times", 16 * -1),
         font=("Times", 16 * -1),
         width=220
     )
@@ -156,7 +150,6 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         time2.strftime("%c"),
         fill="#FFFFFF",
         font=("Times", 16 * -1),
-        font=("Times", 16 * -1),
         width=220
     )
 
@@ -171,7 +164,6 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nWeather Conditions: " + str(Code3) + "\n" +
         time3.strftime("%c"),
         fill="#FFFFFF",
-        font=("Times", 16 * -1),
         font=("Times", 16 * -1),
         width=220
     )
@@ -188,7 +180,6 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         time4.strftime("%c"),
         fill="#FFFFFF",
         font=("Times", 16 * -1),
-        font=("Times", 16 * -1),
         width=220
     )
     return canvas
@@ -199,7 +190,6 @@ def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCod
     canvas.create_text(
         500,
         25,
-        25,
         anchor="nw",
         text=("RealFeel: " + str(rf) + "°F" +
             "\nHumidity: " + str(humid) + "%" +
@@ -207,15 +197,14 @@ def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCod
             "\nPrecipitation Chance: " + str(precip) + "%" +
             "\nPressure: " + str(pressure) + "hPa" +
             "\nWeather Conditions: " + str(weatherCode)),
-        fill="#000000",
-        font=("Times", 28 * -1)
+        fill="#FFFFFF",
         font=("Times", 28 * -1)
     )
 
     #Current Temperature
     canvas.create_text(
         220,
-        75,
+        90,
         anchor="nw",
         text= str(temp) + "°F",
         fill="#FFFFFF",
@@ -223,15 +212,24 @@ def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCod
     )
     return canvas
 
-def show_facts(canvas):
+def show_facts(canvas, history):
     canvas.create_text(
     1085.0,
     85,
-    85,
     anchor="nw",
-    text="Insert Fun text here",
+    text=history,
     fill="#000000",
-    font=("Inter", 16 * -1)
+    font=("Times", 16 * -1),
+    width=360
+    )
+
+    canvas.create_text(
+        1085.0,
+        715,
+        anchor="sw",
+        text="From https://www.weather.gov/eax/wxhistory",
+        fill="#666666",
+        font=("Times", 10)
     )
 
     return canvas

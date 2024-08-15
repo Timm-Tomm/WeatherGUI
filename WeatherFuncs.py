@@ -37,6 +37,12 @@ def get_daily_forecast(location):
 def get_History():
     r = requests.get("https://www.weather.gov/eax/wxhistory")
     soup = BeautifulSoup(r.content, 'html.parser')
-    s = soup.find('tbody', class_="boldtype")
-    #content = s.find_all('tr')
-    #return content
+    content = soup.find_all('tr')
+    results = ""
+    for line in content:
+        results += line.get_text().replace('\n', '').replace('\xa0', '') + '\n\n'
+            #results += line.get_text()
+    return results
+
+if __name__ == "__main__":
+    print(get_History())

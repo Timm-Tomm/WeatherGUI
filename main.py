@@ -38,11 +38,11 @@ def main():
     window = Tk()
 
     window.geometry("1440x1080")
-    window.configure(bg = "#DDDDDD")
+    #window.configure(bg = "#000030")
 
     canvas = Canvas(
     window,
-    bg = "#87CEEB",
+    bg = "#000030",
     height = 1080,
     width = 1440,
     bd = 0,
@@ -53,7 +53,8 @@ def main():
     #Build out the basis of the GUI before data is added to it
     gui.base(canvas)
     
-    gui.show_facts(canvas)
+    history = WeatherFuncs.get_History()
+    gui.show_facts(canvas, history)
 
     #Build out current weather
     cur = WeatherFuncs.get_current_weather(64015)
@@ -148,7 +149,7 @@ def main():
 
 
     tomorrowPic = PhotoImage(
-        file=Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\powered-by-tomorrow\Powered_by_Tomorrow-Black.png"))
+        file=Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\powered-by-tomorrow\Powered_by_Tomorrow-White.png"))
     Pic = canvas.create_image(
         1180,
         40,
