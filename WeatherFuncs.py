@@ -1,7 +1,7 @@
 import requests
 import json
 import main
-from datetime import datetime
+from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from string import Template
 
@@ -14,10 +14,10 @@ def get_current_weather(location):
 
 #API call to tomorrow.io for forecast data
 #Requires the location as a parameter to search on
-def get_daily_forecast(location):
+def get_daily_forecast(lon, lat):
     URL = "https://api.tomorrow.io/v4/timelines?apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm"
     payload = {
-    "location": "39.029292, -94.274253",
+    "location": "{}, {}".format(lat, lon),
     "fields": ["temperature", "temperatureApparent", "humidity", "weatherCode"],
     "units": "imperial",
     "timesteps": ["1d"],
@@ -43,6 +43,40 @@ def get_History():
         results += line.get_text().replace('\n', '').replace('\xa0', '') + '\n\n'
             #results += line.get_text()
     return results
+
+def get_Hourly(lon, lat):
+    URL = "https://api.tomorrow.io/v4/timelines?apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm"
+    payload = {
+    "location": "{}, {}".format(lat, lon),
+    "fields": ["temperature"],
+    "units": "imperial",
+    "timesteps": ["1h"],
+    "startTime": "now",
+    "endTime": "nowPlus6h",
+    "timezone": "auto"
+    }
+    headers = {
+    "accept": "application/json",
+    "Accept-Encoding": "gzip",
+    "content-type": "application/json"
+    }
+    response = requests.post(URL, json=payload, headers=headers)
+    data = response.json()
+    hour1Temp = float(data["data"]["timelines"][0]["intervals"][0]["values"]["temperature"])
+    hour2Temp = float(data["data"]["timelines"][0]["intervals"][1]["values"]["temperature"])
+    hour3Temp = float(data["data"]["timelines"][0]["intervals"][2]["values"]["temperature"])
+    hour4Temp = float(data["data"]["timelines"][0]["intervals"][3]["values"]["temperature"])
+    hour5Temp = float(data["data"]["timelines"][0]["intervals"][4]["values"]["temperature"])
+    hour6Temp = float(data["data"]["timelines"][0]["intervals"][5]["values"]["temperature"])
+    hour1 = datetime.now().replace(minute=0, second=0) + timedelta(hours=1)
+    hour2 = datetime.now().replace(minute=0, second=0) + timedelta(hours=2)
+    hour3 = datetime.now().replace(minute=0, second=0) + timedelta(hours=3)
+    hour4 = datetime.now().replace(minute=0, second=0) + timedelta(hours=4)
+    hour5 = datetime.now().replace(minute=0, second=0) + timedelta(hours=5)
+    hour6 = datetime.now().replace(minute=0, second=0) + timedelta(hours=6)
+
+    points = [hour1Temp, hour2Temp, hour3Temp, hour4Temp, hour5Temp, hour6Temp, hour6Temp]
+    return points
 
 if __name__ == "__main__":
     print(get_History())

@@ -3,9 +3,9 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 
 from pathlib import Path
-import main
+import main, statistics
 from datetime import datetime, timedelta
-from datetime import datetime, timedelta
+from time import strftime
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
@@ -29,12 +29,13 @@ def base(canvas):
         fill="#000030",
         outline="")
 
+    #Facts box
     canvas.create_rectangle(
         1080.0,
         80,
         1440.0,
         715.0,
-        fill="#A2A2A2",
+        fill="#BBBBBB",
         outline="")
 
     canvas.create_rectangle(
@@ -45,6 +46,7 @@ def base(canvas):
         fill="#FF7A00",
         outline="")
 
+    #Day forecast top boxes
     canvas.create_rectangle(
         725,
         725.0,
@@ -77,12 +79,13 @@ def base(canvas):
         fill="#252525",
         outline="")
 
+    #Day forecast bottom boxes
     canvas.create_rectangle(
         10,
         850.0,
         350,
         1070.0,
-        fill="#A2A2A2",
+        fill="#565656",
         outline="")
 
     canvas.create_rectangle(
@@ -90,7 +93,7 @@ def base(canvas):
         850.0,
         1430.0,
         1070.0,
-        fill="#A2A2A2",
+        fill="#565656",
         outline="")
 
     canvas.create_rectangle(
@@ -98,7 +101,7 @@ def base(canvas):
         850.0,
         1070.0,
         1070.0,
-        fill="#A2A2A2",
+        fill="#565656",
         outline="")
 
     canvas.create_rectangle(
@@ -106,15 +109,16 @@ def base(canvas):
         850.0,
         710,
         1070.0,
-        fill="#A2A2A2",
+        fill="#565656",
         outline="")
     
+    #Hourly timeline container
     canvas.create_rectangle(
         5,
         250,
         1075.0,
         715.0,
-        fill="#A2A2A2",
+        fill="#000080",
         outline="")
     return canvas
 
@@ -125,62 +129,62 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
     time3 = datetime.now().replace(minute=0, second=0) + timedelta(days=2)
     time4 = datetime.now().replace(minute=0, second=0) + timedelta(days=3)
     canvas.create_text(
-        125,
-        737.0,
+        10,
+        860.0,
         anchor="nw",
         text="Temp: " + Temp1 + "°F"
         "\nRealFeel: " + RF1 + "°F" +
         "\nHumidity: " + Humid1 + "%" +
         "\nWeather Conditions: " + str(Code1) + "\n" +
-        time.strftime("%c"),
+        time.strftime("%b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 16 * -1),
-        width=220
+        font=("Times", 28 * -1),
+        width=340
     )
 
     #Day 2
     canvas.create_text(
-        490,
-        734.0,
+        380,
+        860.0,
         anchor="nw",
         text="Temp: " + Temp2 + "°F" +
         "\nRealFeel: " + RF2 + "°F" +
         "\nHumidity: " + Humid2 + "%" +
         "\nWeather Conditions: " + str(Code2) + "\n" +
-        time2.strftime("%c"),
+        time2.strftime("%b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 16 * -1),
-        width=220
+        font=("Times", 28 * -1),
+        width=340
     )
 
     #Day 3
     canvas.create_text(
-        850,
-        737.0,
+        740,
+        860.0,
         anchor="nw",
         text="Temp: " + Temp3 + "°F" +
         "\nRealFeel: " + RF3 + "°F" +
         "\nHumidity: " + Humid3 + "%" +
         "\nWeather Conditions: " + str(Code3) + "\n" +
-        time3.strftime("%c"),
+        time3.strftime("%b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 16 * -1),
-        width=220
+        font=("Times", 28 * -1),
+        width=340
     )
 
     #Day 4
     canvas.create_text(
-        1210.0,
-        737.0,
+        1100.0,
+        860.0,
         anchor="nw",
         text="Temp: " + Temp4 + "°F" +
         "\nRealFeel: " + RF4 + "°F" +
         "\nHumidity: " + Humid4 + "%" +
         "\nWeather Conditions: " + str(Code4) + "\n" +
-        time4.strftime("%c"),
+        time4.strftime("%b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 16 * -1),
-        width=220
+        font=("Times", 28 * -1),
+        width=340
     )
     return canvas
 
@@ -212,6 +216,46 @@ def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCod
     )
     return canvas
 
+def show_hourly(canvas, points):
+    x_scale = 16  # Scale for x-axis
+    #y_scale = 7.299  # Scale for y-axis
+    x_offset = 20
+    y_offset = 680
+
+    #Draw x and y axes
+    canvas.create_line(80, 680, 1060, 680, width=3, fill="#FFFFFF")
+    canvas.create_line(80, 680, 80, 300, width=3, fill="#FFFFFF")
+    canvas.create_line(100, 490, 1000, 490, width=3, fill="#888888", dash = (20, 5))
+    canvas.create_text(300, 250, text="Temperature over the next 6 hours", anchor="nw", fill="#FFFFFF", font=("Calibri", 30*-1))
+    average = str("%.2f" % round(statistics.fmean(points), 2))
+    low = str("%.2f" % round(min(points)*.99, 2))
+    high = str("%.2f" % round(max(points)*1.01, 2))
+    #380 is used because there is no built-in line graph for Tkinter and one must be made
+    #The y axis is 380 pixels high, so the standard 0-100 scale must be updated to account for that change
+    y_scale = float(380 / (float(high)-float(low)))
+    print(points)
+    #Creating a scale on the left side 
+    canvas.create_text(10, 490, text=average + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
+    canvas.create_text(10, 680, text=low + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
+    canvas.create_text(10, 300, text=high + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
+
+    #Draw data points and lines
+    for i in range(1, len(points)):
+        x1, y1 = 10*i, points[i-1]
+        x2, y2 = 10*i+10, points[i]
+        x1_scaled = (x1 * x_scale) + x_offset 
+        y1_scaled = ((y1 * y_scale) % 380) + 300
+        x2_scaled = (x2 * x_scale) + x_offset 
+        y2_scaled = ((y2 * y_scale) % 380) + 300
+        print("y1: " + str(y1) + " " + str(y1_scaled) + " y2: " + str(y2) + " " + str(y2_scaled))
+        canvas.create_oval(x1_scaled - 8, y1_scaled - 8, x1_scaled + 8, y1_scaled + 8, fill="Red")
+        #Break so line stops at the last point
+        if i == len(points)-1:
+            break
+        else:
+            canvas.create_line(x1_scaled, y1_scaled, x2_scaled, y2_scaled, width=3, fill="#FFFFFF")
+
+#Get and show historical weather facts on the day from weather.gov
 def show_facts(canvas, history):
     canvas.create_text(
     1085.0,
@@ -219,7 +263,7 @@ def show_facts(canvas, history):
     anchor="nw",
     text=history,
     fill="#000000",
-    font=("Times", 16 * -1),
+    font=("Times", 14),
     width=360
     )
 
@@ -234,4 +278,15 @@ def show_facts(canvas, history):
 
     return canvas
 
-
+#Show the current time for the user provided zip code
+def show_time(canvas, location):
+    string = strftime('%H:%M')
+    canvas.create_text(
+        10,
+        10,
+        anchor="nw",
+        text=string + ", " + location,
+        font=('Times', 20, 'bold'),
+        fill='purple',
+    )
+    return canvas

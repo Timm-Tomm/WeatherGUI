@@ -2,10 +2,8 @@ from tkinter import *
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from pathlib import Path
 
-import WeatherFuncs
-import gui
+import WeatherFuncs, time, gui, tksvg, pgeocode
 from datetime import datetime
-import tksvg
 
 #List of weather codes supplied by tomorrow.io
 codes =  {
@@ -25,139 +23,155 @@ images = {
       "8000": "tstorm.svg"
 }
 
-
-
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\V1_icons\color")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
-
+     
 def main():
-    #Initialize Tkinter Window
-    window = Tk()
+    #Get user defined location so it isn't hard-coded and can be changed
+        location = input("Enter zip code: ")
+        nomi = pgeocode.Nominatim("us")
+        latlon = nomi.query_postal_code(location)
+        lon = str(latlon['longitude'])
+        lat = str(latlon['latitude'])
+        
+    #while True:
+        #Initialize Tkinter Window
+        window = Tk()
 
-    window.geometry("1440x1080")
-    #window.configure(bg = "#000030")
+        window.geometry("1440x1080")
+        #window.configure(bg = "#000030")
 
-    canvas = Canvas(
-    window,
-    bg = "#000030",
-    height = 1080,
-    width = 1440,
-    bd = 0,
-    highlightthickness = 0,
-    relief = "ridge"
-    )
+        canvas = Canvas(
+        window,
+        bg = "#000030",
+        height = 1080,
+        width = 1440,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "sunken"
+        )
 
-    #Build out the basis of the GUI before data is added to it
-    gui.base(canvas)
-    
-    history = WeatherFuncs.get_History()
-    gui.show_facts(canvas, history)
+        #Build out the basis of the GUI before data is added to it
+        gui.base(canvas)
+        
+        history = WeatherFuncs.get_History()
+        gui.show_facts(canvas, history)
 
-    #Build out current weather
-    cur = WeatherFuncs.get_current_weather(64015)
-    temp = str(cur["data"]["values"]["temperature"])
-    rf = str(cur["data"]["values"]["temperatureApparent"])
-    humid = str(cur["data"]["values"]["humidity"])
-    windS = str(cur["data"]["values"]["windSpeed"])
-    windD = cur["data"]["values"]["windDirection"]
-    precip = str(cur["data"]["values"]["precipitationProbability"])
-    pressure = str(cur["data"]["values"]["pressureSurfaceLevel"])
-    weatherCode = str(cur["data"]["values"]["weatherCode"])
-    curCode = codes[weatherCode]
+        #Build out current weather
+        cur = WeatherFuncs.get_current_weather(location)
+        temp = str(cur["data"]["values"]["temperature"])
+        rf = str(cur["data"]["values"]["temperatureApparent"])
+        humid = str(cur["data"]["values"]["humidity"])
+        windS = str(cur["data"]["values"]["windSpeed"])
+        windD = cur["data"]["values"]["windDirection"]
+        precip = str(cur["data"]["values"]["precipitationProbability"])
+        pressure = str(cur["data"]["values"]["pressureSurfaceLevel"])
+        weatherCode = str(cur["data"]["values"]["weatherCode"])
+        curCode = codes[weatherCode]
 
-    gui.show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, curCode)
+        gui.show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, curCode)
 
-    #Build out the hourly forecast
-    days = WeatherFuncs.get_daily_forecast(64015)
-    day1Temp = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperature"])
-    day1RF = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperatureApparent"])
-    day1Humid = str(days["data"]["timelines"][0]["intervals"][0]["values"]["humidity"])
-    day1Code = str(days["data"]["timelines"][0]["intervals"][0]["values"]["weatherCode"])
-    day2Temp = str(days["data"]["timelines"][0]["intervals"][1]["values"]["temperature"])
-    day2RF = str(days["data"]["timelines"][0]["intervals"][1]["values"]["temperatureApparent"])
-    day2Humid = str(days["data"]["timelines"][0]["intervals"][1]["values"]["humidity"])
-    day2Code = str(days["data"]["timelines"][0]["intervals"][1]["values"]["weatherCode"])
-    day3Temp = str(days["data"]["timelines"][0]["intervals"][2]["values"]["temperature"])
-    day3RF = str(days["data"]["timelines"][0]["intervals"][2]["values"]["temperatureApparent"])
-    day3Humid = str(days["data"]["timelines"][0]["intervals"][2]["values"]["humidity"])
-    day3Code = str(days["data"]["timelines"][0]["intervals"][2]["values"]["weatherCode"])
-    day4Temp = str(days["data"]["timelines"][0]["intervals"][3]["values"]["temperature"])
-    day4RF = str(days["data"]["timelines"][0]["intervals"][3]["values"]["temperatureApparent"])
-    day4Humid = str(days["data"]["timelines"][0]["intervals"][3]["values"]["humidity"])
-    day4Code = str(days["data"]["timelines"][0]["intervals"][3]["values"]["weatherCode"])
-    Code1 = codes[day1Code]
-    Code2 = codes[day2Code]
-    Code3 = codes[day3Code]
-    Code4 = codes[day4Code]
-    
-    gui.show_days(canvas, day1Temp, day2Temp, day3Temp, day4Temp, day1RF, day2RF, day3RF, day4RF, day1Humid, day2Humid, day3Humid, day4Humid, Code1, Code2, Code3, Code4)
-    
-    #hist = WeatherFuncs.get_History()
+        #Build out the hourly forecast
+        days = WeatherFuncs.get_daily_forecast(lon, lat)
+        day1Temp = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperature"])
+        day1RF = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperatureApparent"])
+        day1Humid = str(days["data"]["timelines"][0]["intervals"][0]["values"]["humidity"])
+        day1Code = str(days["data"]["timelines"][0]["intervals"][0]["values"]["weatherCode"])
+        day2Temp = str(days["data"]["timelines"][0]["intervals"][1]["values"]["temperature"])
+        day2RF = str(days["data"]["timelines"][0]["intervals"][1]["values"]["temperatureApparent"])
+        day2Humid = str(days["data"]["timelines"][0]["intervals"][1]["values"]["humidity"])
+        day2Code = str(days["data"]["timelines"][0]["intervals"][1]["values"]["weatherCode"])
+        day3Temp = str(days["data"]["timelines"][0]["intervals"][2]["values"]["temperature"])
+        day3RF = str(days["data"]["timelines"][0]["intervals"][2]["values"]["temperatureApparent"])
+        day3Humid = str(days["data"]["timelines"][0]["intervals"][2]["values"]["humidity"])
+        day3Code = str(days["data"]["timelines"][0]["intervals"][2]["values"]["weatherCode"])
+        day4Temp = str(days["data"]["timelines"][0]["intervals"][3]["values"]["temperature"])
+        day4RF = str(days["data"]["timelines"][0]["intervals"][3]["values"]["temperatureApparent"])
+        day4Humid = str(days["data"]["timelines"][0]["intervals"][3]["values"]["humidity"])
+        day4Code = str(days["data"]["timelines"][0]["intervals"][3]["values"]["weatherCode"])
+        Code1 = codes[day1Code]
+        Code2 = codes[day2Code]
+        Code3 = codes[day3Code]
+        Code4 = codes[day4Code]
+        
+        gui.show_days(canvas, day1Temp, day2Temp, day3Temp, day4Temp, day1RF, day2RF, day3RF, day4RF, day1Humid, day2Humid, day3Humid, day4Humid, Code1, Code2, Code3, Code4)
+         
+        points = WeatherFuncs.get_Hourly(lon, lat)
+        gui.show_hourly(canvas, points)
+        #hist = WeatherFuncs.get_History()
 
-    #Current picture
-    image_image_4 = tksvg.SvgImage(
-        file=relative_to_assets(images[weatherCode]))
-    image_image_4 = image_image_4.zoom(6, 6)
-    CurrentCon = canvas.create_image(
-        125,
-        125,
-        image=image_image_4
-    )
+        #Current picture
+        #PhotoImage(master=canvas)
+        image_image_4 = tksvg.SvgImage(
+            file=relative_to_assets(images[weatherCode]))
+        image_image_4 = image_image_4.zoom(6, 6)
+        CurrentCon = canvas.create_image(
+            125,
+            125,
+            image=image_image_4
+        )
 
-    #Fourth Day Picture
-    image_image_1 = tksvg.SvgImage(
-        file=relative_to_assets(images[day4Code]))
-    image_image_1 = image_image_1.zoom(3, 3)
-    Day4Pic = canvas.create_image(
-        1147.0,
-        787.0,
-        image=image_image_1
-    )
+        #Fourth Day Picture
+        image_image_1 = tksvg.SvgImage(
+            file=relative_to_assets(images[day4Code]))
+        image_image_1 = image_image_1.zoom(4, 4)
+        Day4Pic = canvas.create_image(
+            1260.0,
+            787.0,
+            image=image_image_1
+        )
 
-    #Third Day Picture
-    image_image_2 = tksvg.SvgImage(
-        file=relative_to_assets(images[day3Code]))
-    image_image_2 = image_image_2.zoom(3, 3)
-    Day3Pic = canvas.create_image(
-        787,
-        787.0,
-        image=image_image_2
-    )
+        #Third Day Picture
+        image_image_2 = tksvg.SvgImage(
+            file=relative_to_assets(images[day3Code]))
+        image_image_2 = image_image_2.zoom(4, 4)
+        Day3Pic = canvas.create_image(
+            900,
+            787.0,
+            image=image_image_2
+        )
 
-    #Second Day Picture
-    image_image_3 = tksvg.SvgImage(
-        file=relative_to_assets(images[day2Code]))
-    image_image_3 = image_image_3.zoom(3, 3)
-    Day2Pic = canvas.create_image(
-        427,
-        787.0,
-        image=image_image_3
-    )
+        #Second Day Picture
+        image_image_3 = tksvg.SvgImage(
+            file=relative_to_assets(images[day2Code]))
+        image_image_3 = image_image_3.zoom(4, 4)
+        Day2Pic = canvas.create_image(
+            540,
+            787.0,
+            image=image_image_3
+        )
 
-    #First Day Picture
-    image_image_5 = tksvg.SvgImage(
-        file=relative_to_assets(images[day1Code]))
-    image_image_5 = image_image_5.zoom(3, 3)
-    Day1Pic = canvas.create_image(
-        67,
-        787.0,
-        image=image_image_5
-    )
+        #First Day Picture
+        image_image_5 = tksvg.SvgImage(
+            file=relative_to_assets(images[day1Code]))
+        image_image_5 = image_image_5.zoom(4, 4)
+        Day1Pic = canvas.create_image(
+            170,
+            787.0,
+            image=image_image_5
+        )
 
+        #Credits to tomorrow.io for data and images
+        tomorrowPic = PhotoImage(
+            file=Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\powered-by-tomorrow\Powered_by_Tomorrow-White.png"))
+        Pic = canvas.create_image(
+            1180,
+            40,
+            image = tomorrowPic,
+        )
 
-    tomorrowPic = PhotoImage(
-        file=Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\powered-by-tomorrow\Powered_by_Tomorrow-White.png"))
-    Pic = canvas.create_image(
-        1180,
-        40,
-        image = tomorrowPic,
-    )
+        gui.show_time(canvas, location)
 
-    window.resizable(False, False)
-    window.mainloop()
+        window.resizable(False, False)
+        #draw(canvas)
+        
+        #Resets window and data after 5 minutes
+        #window.after(20000, window.update())
+        #window.destroy()
+        window.mainloop()
 
 if __name__ == "__main__":
     main()
