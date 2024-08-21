@@ -136,7 +136,7 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nRealFeel: " + RF1 + "°F" +
         "\nHumidity: " + Humid1 + "%" +
         "\nWeather Conditions: " + str(Code1) + "\n" +
-        time.strftime("%b %d %H:%M"),
+        time.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
         font=("Times", 28 * -1),
         width=340
@@ -151,7 +151,7 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nRealFeel: " + RF2 + "°F" +
         "\nHumidity: " + Humid2 + "%" +
         "\nWeather Conditions: " + str(Code2) + "\n" +
-        time2.strftime("%b %d %H:%M"),
+        time2.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
         font=("Times", 28 * -1),
         width=340
@@ -166,7 +166,7 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nRealFeel: " + RF3 + "°F" +
         "\nHumidity: " + Humid3 + "%" +
         "\nWeather Conditions: " + str(Code3) + "\n" +
-        time3.strftime("%b %d %H:%M"),
+        time3.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
         font=("Times", 28 * -1),
         width=340
@@ -181,7 +181,7 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nRealFeel: " + RF4 + "°F" +
         "\nHumidity: " + Humid4 + "%" +
         "\nWeather Conditions: " + str(Code4) + "\n" +
-        time4.strftime("%b %d %H:%M"),
+        time4.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
         font=("Times", 28 * -1),
         width=340
@@ -244,9 +244,9 @@ def show_hourly(canvas, points):
         x1, y1 = 10*i, points[i-1]
         x2, y2 = 10*i+10, points[i]
         x1_scaled = (x1 * x_scale) + x_offset 
-        y1_scaled = ((y1 * y_scale) % 380) + 300
+        y1_scaled = 680 - ((y1 * y_scale) % 380) 
         x2_scaled = (x2 * x_scale) + x_offset 
-        y2_scaled = ((y2 * y_scale) % 380) + 300
+        y2_scaled = 680 - ((y2 * y_scale) % 380) 
         print("y1: " + str(y1) + " " + str(y1_scaled) + " y2: " + str(y2) + " " + str(y2_scaled))
         canvas.create_oval(x1_scaled - 8, y1_scaled - 8, x1_scaled + 8, y1_scaled + 8, fill="Red")
         #Break so line stops at the last point
