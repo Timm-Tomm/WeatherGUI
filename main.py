@@ -100,8 +100,7 @@ def main():
         gui.show_days(canvas, day1Temp, day2Temp, day3Temp, day4Temp, day1RF, day2RF, day3RF, day4RF, day1Humid, day2Humid, day3Humid, day4Humid, Code1, Code2, Code3, Code4)
          
         points = WeatherFuncs.get_Hourly(lon, lat)
-        gui.show_hourly(canvas, points)
-        #hist = WeatherFuncs.get_History()
+        gui.show_hourly(canvas, points) 
 
         #Current picture
         #PhotoImage(master=canvas)
