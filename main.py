@@ -3,7 +3,6 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 from pathlib import Path
 
 import WeatherFuncs, time, gui, tksvg, pgeocode
-from datetime import datetime
 
 #List of weather codes supplied by tomorrow.io
 codes =  {
@@ -14,6 +13,8 @@ codes =  {
       "7000": "Ice Pellets", "7101": "Heavy Ice Pellets", "7102": "Light Ice Pellets",
       "8000": "Thunderstorm"
     }
+
+#Weather codes relating to different pictures supplied by Tomorrow.io
 images = {
       "0": "clear_day.svg", "1000": "clear_day.svg", "1100": "mostly_cloudy.svg", "1101": "partly_cloudy_day.svg", "1102": "mostly_cloudy.svg", "1001": "cloudy.svg",
       "2000": "fog.svg", "2100": "fog_light.svg", "4000": "drizzle.svg", "4001": "rain.svg", "4200": "rain_light.svg", "4201": "rain_heavy.svg",
@@ -23,27 +24,28 @@ images = {
       "8000": "tstorm.svg"
 }
 
+#Defining a path for Tkinter to follow when pulling images
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\V1_icons\color")
-
+ASSETS_PATH = OUTPUT_PATH / Path(r"tomorrow-weather-codes\V1_icons\color")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
-     
+
+'''This function pulls all of the relevant data from other files and displays it to users via Tkinter.
+It destroys the current window and repopulates the data every 5 minutes.''' 
 def main():
     #Get user defined location so it isn't hard-coded and can be changed
-        location = input("Enter zip code: ")
-        nomi = pgeocode.Nominatim("us")
-        latlon = nomi.query_postal_code(location)
-        lon = str(latlon['longitude'])
-        lat = str(latlon['latitude'])
-        
-    #while True:
+    location = input("Enter zip code: ")
+
+    #Takes the entered zip code and find the latitude and longitude for one of the functions
+    nomi = pgeocode.Nominatim("us")
+    latlon = nomi.query_postal_code(location)
+    lon = str(latlon['longitude'])
+    lat = str(latlon['latitude'])
+    
+    while True:
         #Initialize Tkinter Window
         window = Tk()
-
         window.geometry("1440x1080")
-        #window.configure(bg = "#000030")
-
         canvas = Canvas(
         window,
         bg = "#000030",
@@ -57,6 +59,7 @@ def main():
         #Build out the basis of the GUI before data is added to it
         gui.base(canvas)
         
+        #Pull the weather history for the day from the National Weather Service
         history = WeatherFuncs.get_History()
         gui.show_facts(canvas, history)
 
@@ -71,10 +74,9 @@ def main():
         pressure = str(cur["data"]["values"]["pressureSurfaceLevel"])
         weatherCode = str(cur["data"]["values"]["weatherCode"])
         curCode = codes[weatherCode]
-
         gui.show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, curCode)
 
-        #Build out the hourly forecast
+        #Build out the daily forecast
         days = WeatherFuncs.get_daily_forecast(lon, lat)
         day1Temp = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperature"])
         day1RF = str(days["data"]["timelines"][0]["intervals"][0]["values"]["temperatureApparent"])
@@ -96,9 +98,9 @@ def main():
         Code2 = codes[day2Code]
         Code3 = codes[day3Code]
         Code4 = codes[day4Code]
-        
         gui.show_days(canvas, day1Temp, day2Temp, day3Temp, day4Temp, day1RF, day2RF, day3RF, day4RF, day1Humid, day2Humid, day3Humid, day4Humid, Code1, Code2, Code3, Code4)
-         
+        
+        #Generate points for the hourly temperature forecast
         points = WeatherFuncs.get_Hourly(lon, lat)
         gui.show_hourly(canvas, points) 
 
@@ -162,14 +164,14 @@ def main():
             image = tomorrowPic,
         )
 
+        #Show clock and location in the top left
         gui.show_time(canvas, location)
-
         window.resizable(False, False)
-        #draw(canvas)
         
         #Resets window and data after 5 minutes
-        #window.after(20000, window.update())
-        #window.destroy()
+        for i in range(300):
+            window.after(1000, window.update())
+        window.destroy()
         window.mainloop()
 
 if __name__ == "__main__":

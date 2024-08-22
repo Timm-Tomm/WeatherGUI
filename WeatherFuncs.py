@@ -1,7 +1,4 @@
 import requests
-import json
-import main
-from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 from string import Template
 
@@ -13,7 +10,7 @@ def get_current_weather(location):
     return data.json()
 
 #API call to tomorrow.io for forecast data
-#Requires the location as a parameter to search on
+#This API cannot use the zip code but will accept latitude and longitude (in that order specifically)
 def get_daily_forecast(lon, lat):
     URL = "https://api.tomorrow.io/v4/timelines?apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm"
     payload = {
@@ -41,9 +38,10 @@ def get_History():
     results = ""
     for line in content:
         results += line.get_text().replace('\n', '').replace('\xa0', '') + '\n\n'
-            #results += line.get_text()
     return results
 
+#API call to tomorrow.io for hourly temperature over the next 6 hours
+#This API cannot use the zip code but will accept latitude and longitude (in that order specifically)
 def get_Hourly(lon, lat):
     URL = "https://api.tomorrow.io/v4/timelines?apikey=eMQs1BYAUAZIDiEdTUMRvMve815lXnqm"
     payload = {
@@ -68,12 +66,6 @@ def get_Hourly(lon, lat):
     hour4Temp = float(data["data"]["timelines"][0]["intervals"][3]["values"]["temperature"])
     hour5Temp = float(data["data"]["timelines"][0]["intervals"][4]["values"]["temperature"])
     hour6Temp = float(data["data"]["timelines"][0]["intervals"][5]["values"]["temperature"])
-    hour1 = datetime.now().replace(minute=0, second=0) + timedelta(hours=1)
-    hour2 = datetime.now().replace(minute=0, second=0) + timedelta(hours=2)
-    hour3 = datetime.now().replace(minute=0, second=0) + timedelta(hours=3)
-    hour4 = datetime.now().replace(minute=0, second=0) + timedelta(hours=4)
-    hour5 = datetime.now().replace(minute=0, second=0) + timedelta(hours=5)
-    hour6 = datetime.now().replace(minute=0, second=0) + timedelta(hours=6)
 
     points = [hour1Temp, hour2Temp, hour3Temp, hour4Temp, hour5Temp, hour6Temp, hour6Temp]
     return points

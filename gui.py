@@ -3,14 +3,12 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 
 from pathlib import Path
-import main, statistics
+import statistics
 from datetime import datetime, timedelta
 from time import strftime
 
-# from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import *
-#from tkinter import WORD, Tk, Canvas, Entry, Text, Button, PhotoImage
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI\WeatherGUI\build\assets\frame0")
@@ -19,6 +17,7 @@ DIRECTIONS = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW'
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+#Create the boxes and containers for the data
 def base(canvas):
     canvas.place(x = 0, y = 0)
     canvas.create_rectangle(
@@ -38,6 +37,7 @@ def base(canvas):
         fill="#BBBBBB",
         outline="")
 
+    #Orange background box for the day forecast
     canvas.create_rectangle(
         0,
         720.0,
@@ -46,7 +46,23 @@ def base(canvas):
         fill="#FF7A00",
         outline="")
 
-    #Day forecast top boxes
+    #Day 1 forecast image container
+    canvas.create_rectangle(
+        5,
+        725.0,
+        355,
+        1075.0,
+        fill="#252525",
+        outline="")
+    #Day 2 forecast image container
+    canvas.create_rectangle(
+        365,
+        725.0,
+        715,
+        1075.0,
+        fill="#252525",
+        outline="")
+    #Day 3 forecast top boxes
     canvas.create_rectangle(
         725,
         725.0,
@@ -54,7 +70,7 @@ def base(canvas):
         1075.0,
         fill="#252525",
         outline="")
-
+    #Day 4 forecast image container
     canvas.create_rectangle(
         1085.0,
         725.0,
@@ -63,23 +79,7 @@ def base(canvas):
         fill="#252525",
         outline="")
 
-    canvas.create_rectangle(
-        365,
-        725.0,
-        715,
-        1075.0,
-        fill="#252525",
-        outline="")
-
-    canvas.create_rectangle(
-        5,
-        725.0,
-        355,
-        1075.0,
-        fill="#252525",
-        outline="")
-
-    #Day forecast bottom boxes
+    #Day 1 forecast bottom boxes
     canvas.create_rectangle(
         10,
         850.0,
@@ -87,15 +87,15 @@ def base(canvas):
         1070.0,
         fill="#565656",
         outline="")
-
+    #Day 2 forecast bottom boxes
     canvas.create_rectangle(
-        1090.0,
+        370,
         850.0,
-        1430.0,
+        710,
         1070.0,
         fill="#565656",
         outline="")
-
+    #Day 3 forecast bottom boxes
     canvas.create_rectangle(
         730,
         850.0,
@@ -103,11 +103,11 @@ def base(canvas):
         1070.0,
         fill="#565656",
         outline="")
-
+    #Day 4 forecast bottom boxes
     canvas.create_rectangle(
-        370,
+        1090.0,
         850.0,
-        710,
+        1430.0,
         1070.0,
         fill="#565656",
         outline="")
@@ -218,22 +218,20 @@ def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCod
 
 def show_hourly(canvas, points):
     x_scale = 16  # Scale for x-axis
-    #y_scale = 7.299  # Scale for y-axis
     x_offset = 20
-    y_offset = 680
 
     #Draw x and y axes
     canvas.create_line(80, 680, 1060, 680, width=3, fill="#FFFFFF")
     canvas.create_line(80, 680, 80, 300, width=3, fill="#FFFFFF")
     canvas.create_line(100, 490, 1000, 490, width=3, fill="#888888", dash = (20, 5))
     canvas.create_text(300, 250, text="Temperature over the next 6 hours", anchor="nw", fill="#FFFFFF", font=("Calibri", 30*-1))
+    
+    #Creating data points for a scale on the left side
     average = str("%.2f" % round(statistics.fmean(points), 2))
-    low = str("%.2f" % round(min(points)*.99, 2))
+    low = str("%.2f" % round(min(points)*.99, 2)) 
     high = str("%.2f" % round(max(points)*1.01, 2))
-    #380 is used because there is no built-in line graph for Tkinter and one must be made
-    #The y axis is 380 pixels high, so the standard 0-100 scale must be updated to account for that change
-    y_scale = float(380 / (float(high)-float(low)))
-    print(points)
+    y_scale = float((float(high)-float(low)))
+
     #Creating a scale on the left side 
     canvas.create_text(10, 490, text=average + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
     canvas.create_text(10, 680, text=low + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
@@ -243,11 +241,11 @@ def show_hourly(canvas, points):
     for i in range(1, len(points)):
         x1, y1 = 10*i, points[i-1]
         x2, y2 = 10*i+10, points[i]
-        x1_scaled = (x1 * x_scale) + x_offset 
-        y1_scaled = 680 - ((y1 * y_scale) % 380) 
-        x2_scaled = (x2 * x_scale) + x_offset 
-        y2_scaled = 680 - ((y2 * y_scale) % 380) 
-        print("y1: " + str(y1) + " " + str(y1_scaled) + " y2: " + str(y2) + " " + str(y2_scaled))
+        x1_scaled = (x1 * x_scale) + x_offset
+        #Since Tkinter does not natively support line graphs, one must be built. The following formula scales the temperatures match the scale placed on the left of the graph
+        y1_scaled = 680 - (((y1-float(low))/y_scale)*380)
+        x2_scaled = (x2 * x_scale) + x_offset
+        y2_scaled = 680 - (((y2-float(low))/y_scale)*380)
         canvas.create_oval(x1_scaled - 8, y1_scaled - 8, x1_scaled + 8, y1_scaled + 8, fill="Red")
         #Break so line stops at the last point
         if i == len(points)-1:
@@ -275,7 +273,6 @@ def show_facts(canvas, history):
         fill="#666666",
         font=("Times", 10)
     )
-
     return canvas
 
 #Show the current time for the user provided zip code
