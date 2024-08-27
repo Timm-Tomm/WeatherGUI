@@ -172,7 +172,6 @@ def main():
         for i in range(300):
             window.after(1000, window.update())
         window.destroy()
-        window.mainloop()
 
 if __name__ == "__main__":
     main()

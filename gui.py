@@ -265,6 +265,7 @@ def show_facts(canvas, history):
     width=360
     )
 
+    #This day in weather history is provided by Kansas City. National information is included, but the local will be stuck to KC
     canvas.create_text(
         1085.0,
         715,
