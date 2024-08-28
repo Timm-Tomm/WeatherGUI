@@ -26,7 +26,7 @@ images = {
 
 #Defining a path for Tkinter to follow when pulling images
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"tomorrow-weather-codes\V1_icons\color")
+ASSETS_PATH = OUTPUT_PATH / Path(r"tomorrow-weather-codes/V1_icons/color")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
