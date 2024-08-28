@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from string import Template
 
 #API call to tomorrow.io for current weather data
 #Requires the location as a parameter to search on

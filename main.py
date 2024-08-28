@@ -1,8 +1,7 @@
 from tkinter import *
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, PhotoImage
 from pathlib import Path
-
-import WeatherFuncs, time, gui, tksvg, pgeocode
+import WeatherFuncs, gui, tksvg, pgeocode
 
 #List of weather codes supplied by tomorrow.io
 codes =  {
@@ -14,7 +13,7 @@ codes =  {
       "8000": "Thunderstorm"
     }
 
-#Weather codes relating to different pictures supplied by Tomorrow.io
+#Weather codes relating to different pictures supplied by tomorrow.io
 images = {
       "0": "clear_day.svg", "1000": "clear_day.svg", "1100": "mostly_cloudy.svg", "1101": "partly_cloudy_day.svg", "1102": "mostly_cloudy.svg", "1001": "cloudy.svg",
       "2000": "fog.svg", "2100": "fog_light.svg", "4000": "drizzle.svg", "4001": "rain.svg", "4200": "rain_light.svg", "4201": "rain_heavy.svg",

@@ -6,8 +6,6 @@ from pathlib import Path
 import statistics
 from datetime import datetime, timedelta
 from time import strftime
-
-# Explicit imports to satisfy Flake8
 from tkinter import *
 
 OUTPUT_PATH = Path(__file__).parent
