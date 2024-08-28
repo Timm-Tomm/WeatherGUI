@@ -15,3 +15,6 @@ On the right side of the screen resides a container for local and national histo
 
 # Example from zip code 64015
 ![image](https://github.com/user-attachments/assets/82992a32-d98a-460d-9394-bd8972fe72b9)
+
+To install the software, run the command `pip install -r requirements.txt`. 
+This will install the necessary modules including requests, bs4, tksvg, etc..
