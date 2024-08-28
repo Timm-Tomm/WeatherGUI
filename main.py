@@ -26,7 +26,7 @@ images = {
 
 #Defining a path for Tkinter to follow when pulling images
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"tomorrow-weather-codes/V1_icons/color")
+ASSETS_PATH = OUTPUT_PATH / Path(r"Weather-Codes/V1_icons/color")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -157,7 +157,7 @@ def main():
 
         #Credits to tomorrow.io for data and images
         tomorrowPic = PhotoImage(
-            file=Path(r"C:\Users\tcoll\WeatherGUI-1\tomorrow-weather-codes\powered-by-tomorrow\Powered_by_Tomorrow-White.png"))
+            file=Path(r"Weather-Codes\powered-by-tomorrow\Powered_by_Tomorrow-White.png"))
         Pic = canvas.create_image(
             1180,
             40,
