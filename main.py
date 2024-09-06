@@ -23,6 +23,9 @@ images = {
       "8000": "tstorm.svg"
 }
 
+global scale
+scale = .8
+
 #Defining a path for Tkinter to follow when pulling images
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"Weather-Codes/V1_icons/color")
@@ -44,12 +47,14 @@ def main():
     while True:
         #Initialize Tkinter Window
         window = Tk()
-        window.geometry("1440x1080")
+        winheight = int(1080*scale)
+        winwidth = int(1440*scale)
+        window.geometry(f"{winwidth}x{winheight}")
         canvas = Canvas(
         window,
         bg = "#000030",
-        height = 1080,
-        width = 1440,
+        height = winheight,
+        width = winwidth,
         bd = 0,
         highlightthickness = 0,
         relief = "sunken"
@@ -107,60 +112,61 @@ def main():
         #PhotoImage(master=canvas)
         image_image_4 = tksvg.SvgImage(
             file=relative_to_assets(images[weatherCode]))
-        image_image_4 = image_image_4.zoom(6, 6)
+        image_image_4 = image_image_4.zoom(int(6*scale), int(6*scale))
         CurrentCon = canvas.create_image(
-            125,
-            125,
+            125*scale,
+            125*scale,
             image=image_image_4
         )
 
         #Fourth Day Picture
         image_image_1 = tksvg.SvgImage(
             file=relative_to_assets(images[day4Code]))
-        image_image_1 = image_image_1.zoom(4, 4)
+        image_image_1 = image_image_1.zoom(int(4*scale), int(4*scale))
         Day4Pic = canvas.create_image(
-            1260.0,
-            787.0,
+            1260.0*scale,
+            787.0*scale,
             image=image_image_1
         )
 
         #Third Day Picture
         image_image_2 = tksvg.SvgImage(
             file=relative_to_assets(images[day3Code]))
-        image_image_2 = image_image_2.zoom(4, 4)
+        image_image_2 = image_image_2.zoom(int(4*scale), int(4*scale))
         Day3Pic = canvas.create_image(
-            900,
-            787.0,
+            900*scale,
+            787.0*scale,
             image=image_image_2
         )
 
         #Second Day Picture
         image_image_3 = tksvg.SvgImage(
             file=relative_to_assets(images[day2Code]))
-        image_image_3 = image_image_3.zoom(4, 4)
+        image_image_3 = image_image_3.zoom(int(4*scale), int(4*scale))
         Day2Pic = canvas.create_image(
-            540,
-            787.0,
+            540*scale,
+            787.0*scale,
             image=image_image_3
         )
 
         #First Day Picture
         image_image_5 = tksvg.SvgImage(
             file=relative_to_assets(images[day1Code]))
-        image_image_5 = image_image_5.zoom(4, 4)
+        image_image_5 = image_image_5.zoom(int(4*scale), int(4*scale))
         Day1Pic = canvas.create_image(
-            170,
-            787.0,
+            170*scale,
+            787.0*scale,
             image=image_image_5
         )
 
         #Credits to tomorrow.io for data and images
         tomorrowPic = PhotoImage(
-            file=Path(r"Weather-Codes\powered-by-tomorrow\Powered_by_Tomorrow-White.png"))
+            file=Path(r"Weather-Codes\powered-by-tomorrow\Powered_by_Tomorrow.png"))
         Pic = canvas.create_image(
-            1180,
-            40,
+            1180*scale,
+            40*scale,
             image = tomorrowPic,
+            anchor="center"
         )
 
         #Show clock and location in the top left

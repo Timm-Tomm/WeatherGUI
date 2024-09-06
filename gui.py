@@ -7,6 +7,7 @@ import statistics
 from datetime import datetime, timedelta
 from time import strftime
 from tkinter import *
+from main import scale
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\tcoll\WeatherGUI\WeatherGUI\build\assets\frame0")
@@ -19,103 +20,103 @@ def relative_to_assets(path: str) -> Path:
 def base(canvas):
     canvas.place(x = 0, y = 0)
     canvas.create_rectangle(
-        0,
-        0.0,
-        1080.0,
-        720.0,
+        0*scale,
+        0.0*scale,
+        1080.0*scale,
+        720.0*scale,
         fill="#000030",
         outline="")
 
     #Facts box
     canvas.create_rectangle(
-        1080.0,
-        80,
-        1440.0,
-        715.0,
+        1080.0*scale,
+        80*scale,
+        1440.0*scale,
+        715.0*scale,
         fill="#BBBBBB",
         outline="")
 
     #Orange background box for the day forecast
     canvas.create_rectangle(
-        0,
-        720.0,
-        1440.0,
-        1080.0,
+        0*scale,
+        720.0*scale,
+        1440.0*scale,
+        1080.0*scale,
         fill="#FF7A00",
         outline="")
 
     #Day 1 forecast image container
     canvas.create_rectangle(
-        5,
-        725.0,
-        355,
-        1075.0,
+        5*scale,
+        725.0*scale,
+        355*scale,
+        1075.0*scale,
         fill="#252525",
         outline="")
     #Day 2 forecast image container
     canvas.create_rectangle(
-        365,
-        725.0,
-        715,
-        1075.0,
+        365*scale,
+        725.0*scale,
+        715*scale,
+        1075.0*scale,
         fill="#252525",
         outline="")
     #Day 3 forecast top boxes
     canvas.create_rectangle(
-        725,
-        725.0,
-        1075.0,
-        1075.0,
+        725*scale,
+        725.0*scale,
+        1075.0*scale,
+        1075.0*scale,
         fill="#252525",
         outline="")
     #Day 4 forecast image container
     canvas.create_rectangle(
-        1085.0,
-        725.0,
-        1435.0,
-        1075.0,
+        1085.0*scale,
+        725.0*scale,
+        1435.0*scale,
+        1075.0*scale,
         fill="#252525",
         outline="")
 
     #Day 1 forecast bottom boxes
     canvas.create_rectangle(
-        10,
-        850.0,
-        350,
-        1070.0,
+        10*scale,
+        850.0*scale,
+        350*scale,
+        1070.0*scale,
         fill="#565656",
         outline="")
     #Day 2 forecast bottom boxes
     canvas.create_rectangle(
-        370,
-        850.0,
-        710,
-        1070.0,
+        370*scale,
+        850.0*scale,
+        710*scale,
+        1070.0*scale,
         fill="#565656",
         outline="")
     #Day 3 forecast bottom boxes
     canvas.create_rectangle(
-        730,
-        850.0,
-        1070.0,
-        1070.0,
+        730*scale,
+        850.0*scale,
+        1070.0*scale,
+        1070.0*scale,
         fill="#565656",
         outline="")
     #Day 4 forecast bottom boxes
     canvas.create_rectangle(
-        1090.0,
-        850.0,
-        1430.0,
-        1070.0,
+        1090.0*scale,
+        850.0*scale,
+        1430.0*scale,
+        1070.0*scale,
         fill="#565656",
         outline="")
     
     #Hourly timeline container
     canvas.create_rectangle(
-        5,
-        250,
-        1075.0,
-        715.0,
+        5*scale,
+        250*scale,
+        1075.0*scale,
+        715.0*scale,
         fill="#000080",
         outline="")
     return canvas
@@ -127,8 +128,8 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
     time3 = datetime.now().replace(minute=0, second=0) + timedelta(days=2)
     time4 = datetime.now().replace(minute=0, second=0) + timedelta(days=3)
     canvas.create_text(
-        10,
-        860.0,
+        10*scale,
+        860.0*scale,
         anchor="nw",
         text="Temp: " + Temp1 + "°F"
         "\nRealFeel: " + RF1 + "°F" +
@@ -136,14 +137,14 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nWeather Conditions: " + str(Code1) + "\n" +
         time.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 28 * -1),
-        width=340
+        font=("Times", int(-28*scale)),
+        width=340*scale
     )
 
     #Day 2
     canvas.create_text(
-        380,
-        860.0,
+        380*scale,
+        860.0*scale,
         anchor="nw",
         text="Temp: " + Temp2 + "°F" +
         "\nRealFeel: " + RF2 + "°F" +
@@ -151,14 +152,14 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nWeather Conditions: " + str(Code2) + "\n" +
         time2.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 28 * -1),
-        width=340
+        font=("Times", int(-28*scale)),
+        width=340*scale
     )
 
     #Day 3
     canvas.create_text(
-        740,
-        860.0,
+        740*scale,
+        860.0*scale,
         anchor="nw",
         text="Temp: " + Temp3 + "°F" +
         "\nRealFeel: " + RF3 + "°F" +
@@ -166,14 +167,14 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nWeather Conditions: " + str(Code3) + "\n" +
         time3.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 28 * -1),
-        width=340
+        font=("Times", int(-28*scale)),
+        width=340*scale
     )
 
     #Day 4
     canvas.create_text(
-        1100.0,
-        860.0,
+        1100.0*scale,
+        860.0*scale,
         anchor="nw",
         text="Temp: " + Temp4 + "°F" +
         "\nRealFeel: " + RF4 + "°F" +
@@ -181,8 +182,8 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
         "\nWeather Conditions: " + str(Code4) + "\n" +
         time4.strftime("%a %b %d %H:%M"),
         fill="#FFFFFF",
-        font=("Times", 28 * -1),
-        width=340
+        font=("Times", int(-28*scale)),
+        width=340*scale
     )
     return canvas
 
@@ -190,8 +191,8 @@ def show_days(canvas, Temp1, Temp2, Temp3, Temp4, RF1, RF2, RF3, RF4, Humid1, Hu
 def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCode):
     direction = round(windD/22.5) if windD<348.5 else 361
     canvas.create_text(
-        500,
-        25,
+        500*scale,
+        25*scale,
         anchor="nw",
         text=("RealFeel: " + str(rf) + "°F" +
             "\nHumidity: " + str(humid) + "%" +
@@ -200,17 +201,17 @@ def show_cur(canvas, temp, rf, humid, windS, windD, precip, pressure, weatherCod
             "\nPressure: " + str(pressure) + "hPa" +
             "\nWeather Conditions: " + str(weatherCode)),
         fill="#FFFFFF",
-        font=("Times", 28 * -1)
+        font=("Times", int(-28*scale))
     )
 
     #Current Temperature
     canvas.create_text(
-        220,
-        90,
+        220*scale,
+        90*scale,
         anchor="nw",
         text= str(temp) + "°F",
         fill="#FFFFFF",
-        font=("PTSerif Caption", 64 * -1)
+        font=("PTSerif Caption", int(-64*scale))
     )
     return canvas
 
@@ -219,10 +220,10 @@ def show_hourly(canvas, points):
     x_offset = 20
 
     #Draw x and y axes
-    canvas.create_line(80, 680, 1060, 680, width=3, fill="#FFFFFF")
-    canvas.create_line(80, 680, 80, 300, width=3, fill="#FFFFFF")
-    canvas.create_line(100, 490, 1000, 490, width=3, fill="#888888", dash = (20, 5))
-    canvas.create_text(300, 250, text="Temperature over the next 6 hours", anchor="nw", fill="#FFFFFF", font=("Calibri", 30*-1))
+    canvas.create_line(80*scale, 680*scale, 1060*scale, 680*scale, width=3, fill="#FFFFFF")
+    canvas.create_line(80*scale, 680*scale, 80*scale, 300*scale, width=3, fill="#FFFFFF")
+    canvas.create_line(100*scale, 490*scale, 1000*scale, 490*scale, width=3, fill="#888888", dash = (20, 5))
+    canvas.create_text(300*scale, 250*scale, text="Temperature over the next 6 hours", anchor="nw", fill="#FFFFFF", font=("Calibri", int(-30*scale)))
     
     #Creating data points for a scale on the left side
     average = str("%.2f" % round(statistics.fmean(points), 2))
@@ -231,9 +232,9 @@ def show_hourly(canvas, points):
     y_scale = float((float(high)-float(low)))
 
     #Creating a scale on the left side 
-    canvas.create_text(10, 490, text=average + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
-    canvas.create_text(10, 680, text=low + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
-    canvas.create_text(10, 300, text=high + "°F", anchor="w", font=("Times", 20*-1), fill="#FFFFFF")
+    canvas.create_text(10, 490*scale, text=average + "°F", anchor="w", font=("Times", int(-20*scale)), fill="#FFFFFF")
+    canvas.create_text(10, 680*scale, text=low + "°F", anchor="w", font=("Times", int(-20*scale)), fill="#FFFFFF")
+    canvas.create_text(10, 300*scale, text=high + "°F", anchor="w", font=("Times", int(-20*scale)), fill="#FFFFFF")
 
     #Draw data points and lines
     for i in range(1, len(points)):
@@ -244,33 +245,33 @@ def show_hourly(canvas, points):
         y1_scaled = 680 - (((y1-float(low))/y_scale)*380)
         x2_scaled = (x2 * x_scale) + x_offset
         y2_scaled = 680 - (((y2-float(low))/y_scale)*380)
-        canvas.create_oval(x1_scaled - 8, y1_scaled - 8, x1_scaled + 8, y1_scaled + 8, fill="Red")
+        canvas.create_oval((x1_scaled - 8)*scale, (y1_scaled - 8)*scale, (x1_scaled + 8)*scale, (y1_scaled + 8)*scale, fill="Red")
         #Break so line stops at the last point
         if i == len(points)-1:
             break
         else:
-            canvas.create_line(x1_scaled, y1_scaled, x2_scaled, y2_scaled, width=3, fill="#FFFFFF")
+            canvas.create_line(x1_scaled*scale, y1_scaled*scale, x2_scaled*scale, y2_scaled*scale, width=3, fill="#FFFFFF")
 
 #Get and show historical weather facts on the day from weather.gov
 def show_facts(canvas, history):
     canvas.create_text(
-    1085.0,
-    85,
+    1085.0*scale,
+    85*scale,
     anchor="nw",
     text=history,
     fill="#000000",
-    font=("Times", 14),
-    width=360
+    font=("Times", int(-16*scale)),
+    width=360*scale
     )
 
     #This day in weather history is provided by Kansas City. National information is included, but the local will be stuck to KC
     canvas.create_text(
-        1085.0,
-        715,
+        1085.0*scale,
+        715*scale,
         anchor="sw",
         text="From https://www.weather.gov/eax/wxhistory",
         fill="#666666",
-        font=("Times", 10)
+        font=("Times", int(-10*scale))
     )
     return canvas
 
@@ -278,11 +279,11 @@ def show_facts(canvas, history):
 def show_time(canvas, location):
     string = strftime('%H:%M')
     canvas.create_text(
-        10,
-        10,
+        10*scale,
+        10*scale,
         anchor="nw",
         text=string + ", " + location,
-        font=('Times', 20, 'bold'),
+        font=('Times', int(-20*scale), 'bold'),
         fill='purple',
     )
     return canvas
